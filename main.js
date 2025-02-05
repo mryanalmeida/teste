@@ -1,8 +1,4 @@
-/**
- * Processo principal
- */
-
-const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain, dialog } = require('electron/main')
+const { app, BrowserWindow, nativeTheme, Menu, shell, ipcMain, dialog, globalShortcut } = require('electron/main')
 const path = require('node:path')
 
 // Importação do módulo de conexão
@@ -33,8 +29,8 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.js')
         }
     })
-    // Menu personalizado (comentar para debugar)
-    // Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+    // Menu personalizado
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 
     win.loadFile('./src/views/index.html')
 
@@ -96,7 +92,7 @@ function clientWindow() {
             width: 1280,
             height: 720,
             resizable: false, // Impede redimensionamento
-            //autoHideMenuBar: true,
+            autoHideMenuBar: true,
             parent: main,
             modal: true,
             webPreferences: {
@@ -119,7 +115,7 @@ function supplierWindow() {
             width: 1280,
             height: 720,
             resizable: false, // Impede redimensionamento
-            //autoHideMenuBar: true,
+            autoHideMenuBar: true,
             parent: main,
             modal: true,
             webPreferences: {
@@ -142,7 +138,7 @@ function productWindow() {
             width: 1280,
             height: 720,
             resizable: false, // Impede redimensionamento
-            //autoHideMenuBar: true,
+            autoHideMenuBar: true,
             parent: main,
             modal: true,
             webPreferences: {
@@ -165,7 +161,7 @@ function reportWindow() {
             width: 1280,
             height: 720,
             resizable: false, // Impede redimensionamento
-            //autoHideMenuBar: true,
+            autoHideMenuBar: true,
             parent: main,
             modal: true,
             webPreferences: {
@@ -179,6 +175,18 @@ function reportWindow() {
 }
 
 app.whenReady().then(() => {
+    //Registrar atalho global para devtools em qualquer janela ativa
+    globalShortcut.register('ctrl+shift+I', () => {
+        const tools = BrowserWindow.getFocusedWindow()
+        if (tools) {
+            tools.webContents.openDevTools()
+        }
+    })
+    //Desregistrar atalhos globais antes de sair
+    app.on('will-quit', () => {
+        globalShortcut.unregisterAll()
+    })
+
     createWindow()
     // Melhor local para estabelecer a conexão com o banco de dados
     // Importar antes o módulo de conexão no início do código
@@ -209,10 +217,25 @@ app.on('window-all-closed', () => {
     }
 })
 
+//Reduzir logs nao criticos(mensagens no console quando execultar devtools)
+app.commandLine.appendSwitch('log-level', '3')
+
 const template = [
     {
-        label: 'Arquivo',
+        label: 'Cadastro',
         submenu: [
+            {
+                label: 'Clientes',
+                click: () => clientWindow()
+            },
+            {
+                label: 'Fornecedores',
+                click: () => supplierWindow()
+            },
+            {
+                label: 'Produto',
+                click: () => productWindow()
+            },
             {
                 type: 'separator'
             },
@@ -222,6 +245,9 @@ const template = [
                 click: () => app.quit()
             }
         ]
+    },
+    {
+        label: 'Relatorios'
     },
     {
         label: 'Zoom',
@@ -435,6 +461,13 @@ ipcMain.on('update-client', async (event, cliente) => {
 /***********************************************/
 /**************** Fornecedores ****************/
 /*********************************************/
+
+//Acessar site
+ipcMain.on('url-site', (event, site) => {
+    let url = site.url
+    //console.log(url)
+    shell.openExternal(url)
+})
 
 // CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // Recebimento dos dados de formulário fornecedores.

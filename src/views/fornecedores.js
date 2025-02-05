@@ -269,7 +269,7 @@ document.getElementById('inputCnpjSupplier').addEventListener('input', function 
     formatarCNPJ(this)
 })
 
-document.getElementById('inputPhoneSupplier').addEventListener('input', function() {
+document.getElementById('inputPhoneSupplier').addEventListener('input', function () {
     formatarTelefone(this)
 })
 
@@ -289,3 +289,14 @@ function resetForm() {
     location.reload()
 }
 // Fim - resetForm <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//acessar site
+function acessarSite() {
+    let urlFornecedor = document.getElementById('inputSiteSupplier').value
+    //console.log(urlFornecedor)
+    const url = {
+        url: urlFornecedor
+    }
+    //enviar ao main a url do  site
+    api.abrirSite(url)
+}
