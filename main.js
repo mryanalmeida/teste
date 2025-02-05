@@ -94,7 +94,7 @@ function clientWindow() {
     if (main) {
         client = new BrowserWindow({
             width: 1280,
-            height: 800,
+            height: 720,
             resizable: false, // Impede redimensionamento
             //autoHideMenuBar: true,
             parent: main,
@@ -104,7 +104,7 @@ function clientWindow() {
             }
         })
     }
-    //client.maximize()
+    client.maximize()
 
     client.loadFile('./src/views/clientes.html')
 }
