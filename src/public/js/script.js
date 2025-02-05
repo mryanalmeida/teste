@@ -1,6 +1,6 @@
 /**
  * Busca de CEP Automatica
- * @author Emmanuel L. Nogueira
+ * @author Marcos Almeida 
  */
 
 function buscarEndereco() {

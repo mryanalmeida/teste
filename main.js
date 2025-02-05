@@ -245,7 +245,7 @@ const template = [
         submenu: [
             {
                 label: 'Repositório',
-                click: () => shell.openExternal('https://github.com/emmanuel-lacerd4/conest')
+                click: () => shell.openExternal('')
             },
             {
                 label: 'Sobre',
