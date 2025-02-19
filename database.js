@@ -6,11 +6,10 @@
 const mongoose = require('mongoose')
 
 // Definir a URL e autenticação do banco de dados (acrescentar ao final da URL um nome para o banco de dados)
-const url = 'mongodb+srv://Marcos:marcos123@cluster0.w5mls.mongodb.net/conestdb'
+const url = 'mongodb+srv://marcos:uwnD4HNUvdiVZKPt@cluster0.w5mls.mongodb.net/conestdb'
 
 // Status de Conexão (Icone de Conexão)
 let isConnected = false
-
 // Só estabelecer uma conexão se não estiver conectado
 const dbConnect = async () => {
     if(isConnected === false) {
